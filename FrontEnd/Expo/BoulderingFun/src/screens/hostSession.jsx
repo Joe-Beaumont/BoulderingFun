@@ -11,7 +11,7 @@ export default function HostSession({ navigation }){
     const [playerMenuVisible, setPlayerMenuVisible] = useState(false);
 
     const handleConfirm = () => {
-        navigation.navigate('OngoingSessionHost', {
+        navigation.navigate('HostStaging', {
             timeLimit,
             zone,
             grading,
