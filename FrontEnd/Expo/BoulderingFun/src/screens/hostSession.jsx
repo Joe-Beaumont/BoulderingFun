@@ -15,6 +15,7 @@ export default function HostSession({ navigation }){
             timeLimit,
             zone,
             grading,
+            isHost: true,
             playerCount,
         });
     }
