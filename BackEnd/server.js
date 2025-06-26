@@ -1,12 +1,12 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io')
 const cors = require('cors');
-
 
 //Create server
 const app = express();
 const server = http.createServer(app);
+
+const { Server } = require('socket.io')
 
 const io = new Server(server, {
     cors: {
@@ -23,49 +23,49 @@ io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
 
     //Create room
-    socket.on('create-room', ({ settings }, callback) => {
-        const roomId = generateRoomId();
-        session[roomId] = {
+    socket.on('create-room', ({ roomId, settings }, callback) => {
+        sessions[roomId] = {
             host: socket.id,
             settings,
-            players: []
+            players: [],
+            problems: [],
+            attempts: {}
         };
         socket.join(roomId);
         console.log(`Room created: ${roomId}`);
-        callback({ roomId });
+        if (callback) callback({ success: true });
     });
 
     //Join room
-    socket.on('join-room', ({ roomId, playerName }, callback) => {
+    socket.on('join-room', ({ roomId, playerId }, callback) => {
         const session = sessions[roomId];
         if (!session) {
             return callback({ error: 'Room not found'});
         }
-        session.players.push({ id: socket.id, name: playerName });
+        session.players.push({ id: socket.id, name: playerId });
         socket.join(roomId);
-        io.to(roomId).emit('player-joined', { name: playerName });
+        io.to(roomId).emit('player-joined', { name: playerId });
         callback({ success: true });
     });
 
     //Add problem
-    socket.on('add-problem', ({ roomId, runData }, callback) => {
+    socket.on('add-problem', ({ roomId, problemData }, callback) => {
         const session = sessions[roomId];
         if (!session) return callback({error: "Room not found"});
 
-        const problemId = generateProblemId();
-        const problem = { id: problemId, ...problemData};
+        const problem = problemData;
 
         session.problems.push(problem);
-        session.attempts[problemId] = {}
+        session.attempts[problem.id] = {};
 
         //Broadcast to All clients in room
-        io.to(roomId).emit('run-added', problem);
+        io.to(roomId).emit('problem-added', problem);
 
         callback({ success: true, problem });
     });
 
     //Submit Attempts
-    socket.on('submit-attempts', ({ roomId, problemId, playerId, attempts }, callback) => {
+    socket.on('submit-attempt', ({ roomId, problemId, playerId, attempts }, callback) => {
         const session = sessions[roomId];
         if (!session || !session.attempts[problemId]) {
             return callback({ error: "Invalid problem or session" });

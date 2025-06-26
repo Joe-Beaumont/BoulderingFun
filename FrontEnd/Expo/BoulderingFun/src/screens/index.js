@@ -6,3 +6,4 @@ export { default as SoloSession } from './soloSession';
 export { default as HostSession } from './hostSession';
 export { default as HostStaging } from './hostStaging';
 export { default as JoinSession } from './joinSession';
+export { default as GameScreen } from './gameScreen';
