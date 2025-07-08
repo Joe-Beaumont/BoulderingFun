@@ -5,7 +5,7 @@ import socket from '../../utils/socket';
 
 const AttemptOptions = ['1', '2', '3', '4+', 'Incomplete'];
 
-export default function SharedTable({ problems, playerId, zoneEnabled, attempts, onAttemptChange }) {
+export default function SharedTable({ problems, playerId, zoneEnabled, attempts, onAttemptChange, onAttemptSubmit }) {
 
     const isSubmitted = (problemId) => {
         return attempts[problemId]?.[playerId]?.submitted === true;
@@ -22,7 +22,7 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
 
     const handleZoneToggle = (problemId, value) => {
         const updated = {
-            ...attempts[problemId],
+            ...attempts[problemId]?.[playerId],
             zoneReached: value,
         };
 
@@ -44,7 +44,7 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
 
                     <Picker
                     enabled={!isSubmitted(problem.id)}
-                    selectedValue={attempts[problem.id]?.attempts || 'Incomplete'}
+                    selectedValue={attempts[problem.id]?.[playerId]?.attempts || 'Incomplete'}
                     onValueChange={value => handleAttemptChange(problem.id, value)}
                     >
                         {AttemptOptions.map(opt => (
@@ -57,7 +57,7 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
                                 <Text>Zone</Text>
                                 <Switch
                                 disabled={isSubmitted(problem.id)}
-                                value={attempts[problem.id]?.zoneReached || false}
+                                value={attempts[problem.id]?.[playerId]?.zoneReached || false}
                                 onValueChange={val => handleZoneToggle(problem.id, val)}
                                 />
                                 </View>

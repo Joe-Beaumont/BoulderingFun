@@ -29,7 +29,7 @@ export default function GameScreen({ route }) {
         });
 
         socket.on('problem-added', (newProblem) => {
-            console.log('Problem Added', newProblem)
+            console.log('Problem added', newProblem)
             setProblems(prev => [...prev, newProblem]);
         });
 
@@ -55,7 +55,7 @@ export default function GameScreen({ route }) {
             [playerId]: {
               ...prev[problemId]?.[playerId],
               ...data,
-              submitted: true,
+              submitted: false,
             }
           }
         }));
@@ -66,6 +66,22 @@ export default function GameScreen({ route }) {
             data
         });
     };
+
+    const handleSubmitAttempt = (problemId) => {
+        const data = attempts[problemId]?.[playerId];
+        if (!data) return;
+
+        setAttempts(prev => ({
+            ...prev,
+            [problemId]: {
+                ...prev[problemId],
+                [playerId]: {
+                    ...data,
+                    submitted: true,
+                }
+            }
+        }));
+    }
       
 
 
@@ -90,6 +106,7 @@ export default function GameScreen({ route }) {
             attempts={attempts}
             playerId={playerId}
             onAttemptChange={handleAttemptChange}
+            onAttemptSubmit={handleSubmitAttempt}
             />
         </ScrollView>
     );
