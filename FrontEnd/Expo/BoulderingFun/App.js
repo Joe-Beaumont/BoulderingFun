@@ -1,9 +1,9 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { io } from 'socket.io-client';
-import { Login, HomePage, FindFriends, SoloSession, HostSession, JoinSession, Register, HostStaging, GameScreen} from './src/screens/index';
+import { FindFriends, GameScreen, HomePage, HostSession, HostStaging, JoinSession, Login, Register, SoloSession } from './src/screens/index';
 
 const socket = io("http://192.168.1.52:3000");
 const Stack = createNativeStackNavigator();
@@ -12,7 +12,7 @@ export default function App() {
     return (
         <GestureHandlerRootView>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="HostSession">
+                <Stack.Navigator initialRouteName="Home">
                     <Stack.Screen name='Login' component={Login} />
                     <Stack.Screen name='Register' component={Register} />
                     <Stack.Screen name='Home' component={HomePage} />
