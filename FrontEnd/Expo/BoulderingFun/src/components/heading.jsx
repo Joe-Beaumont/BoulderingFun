@@ -1,37 +1,39 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-export default function Heading({ title }){
+export default function Heading({ title }) {
     return (
-    <View style = {page.heading}>
-    <Image
-    source={require('../images/goat_logo.png')}
-    style={page.logo}/>
-    <Text style={page.headingText}>{title}</Text>
-    </View>
-    )
-};
+        <View style={styles.headingContainer}>
+            <Image
+                source={require('../images/goat_logo.png')}
+                style={styles.logo}
+            />
+            <Text style={styles.headingText}>{title}</Text>
+        </View>
+    );
+}
 
-const page = StyleSheet.create ({
-    heading: {
-        flexDirection: 'row',
-        alignItems: 'center',
+const styles = StyleSheet.create({
+    headingContainer: {
+        width: '100%',
         justifyContent: 'center',
+        alignItems: 'center',
         paddingTop: 25,
-        paddingBottom: 25,
+        paddingBottom: 50,
         position: 'relative',
-        backgroundColor: '#34b4eb',
     },
     logo: {
         position: 'absolute',
+        left: 10,
         top: 0,
-        right: 130,
         width: 100,
         height: 100,
+        resizeMode: 'contain',
     },
     headingText: {
         color: '#eaeaea',
         fontSize: 30,
         fontWeight: 'bold',
+        alignSelf: 'flex-end',
     },
 });
