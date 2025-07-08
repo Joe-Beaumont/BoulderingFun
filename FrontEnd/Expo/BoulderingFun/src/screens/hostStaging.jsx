@@ -5,9 +5,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import socket from '../utils/socket';
 
 export default function HostStaging({ route, navigation }){
-    const { timeLimit, zone, grading, playerCount } = route.params;
+    const { roomId, timeLimit, zone, grading, playerCount } = route.params;
     const [showQR, setShowQR] = useState(false);
-    const [roomId, setRoomId] = useState(null);
+
 
     const qrData = JSON.stringify({
         timeLimit,
@@ -18,23 +18,10 @@ export default function HostStaging({ route, navigation }){
     })
 
     const handleStartGame = () => {
-        const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
-        setRoomId(newRoomId);
-
-        socket.emit('create-room', {
-            roomId: newRoomId,
-            settings: {
-                timeLimit,
-                zone,
-                grading,
-                playerCount
-            }
-        });
-
         navigation.navigate('GameScreen', {
-            roomId: newRoomId,
+            roomId,
             isHost: true,
-            playerId: newRoomId,
+            playerId: roomId,
             timeLimit,
             zone,
             grading,
@@ -47,6 +34,7 @@ export default function HostStaging({ route, navigation }){
         <ScrollView>
             <View>
                 <Text>Session Summary</Text>
+                <Text>Room: {roomId}</Text>
                 <Text>Time Limit: {timeLimit} minutes</Text>
                 <Text>Zone: {zone === 'true' ? 'Zones enabled' : 'Zones disabled'}</Text>
                 <Text>Grading: {grading}</Text>
