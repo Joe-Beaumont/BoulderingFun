@@ -86,6 +86,12 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected:', socket.id);
     });
+
+    //Check Room Exists
+    socket.on('check-room-exists', (roomId, callback) => {
+        const roomExists = rooms.has(roomId);
+        callback({ exists: roomExists})
+    });
 });
 
 //Generate Room Id
@@ -96,6 +102,7 @@ function generateRoomId(){
 app.get('/', (req, res) => {
     res.send('Socket.IO is running');
 });
+
 
 //Listening
 server.listen(3000, () => {
