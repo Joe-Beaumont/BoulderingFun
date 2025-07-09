@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';
 import Heading from "../components/heading";
 import socket from '../utils/socket';
@@ -44,7 +44,7 @@ export default function HostSession({ navigation }){
     
     const openTimeMenu = () => {
         timeButtonRef.current?.measureInWindow((x, y) => {
-            setTimeAnchorPos({ x: x - 200, y: y - 50 });
+            setTimeAnchorPos({ x: x - 200, y: y - 60 });
             setTimeMenuVisible(true);
         });
     };
@@ -59,8 +59,8 @@ export default function HostSession({ navigation }){
 
     return (
         <PaperProvider>
-            <View style={page.container}>
-                <Heading title="Host Session" />
+            <Heading title="Host Session" />
+            <SafeAreaView style={page.container}>
                 {/* Time Menu */}
                 <Text style={page.text}>Time Limit</Text>
                 <View ref={timeButtonRef} style={{ alignSelf: 'flex-end', marginTop: 20 }}>
@@ -97,33 +97,57 @@ export default function HostSession({ navigation }){
                         />
                     ))}
                 </Menu>
-                {/* Radio Buttons */}
+                {/* Radio Button - Zone */}
                 <Text style={page.text}>Zone</Text>
-                <RadioButton.Group onValueChange={value => setZone(value)} value={zone}>
-                    <View style={page.radioGroup}> 
+                <View style={page.radioGroupContainer}>
+                    <View style={StyleSheet.radioGroup}>
                         <Text style={page.radioLabel}>Zone</Text>
-                        <RadioButton value="true" />
-                        <Text style={page.radioLabel}>No Zone</Text>
-                        <RadioButton value="false" />
+                        <RadioButton
+                            value="true"
+                            status={zone === 'true' ? 'checked' : 'unchecked'}
+                            onPress={() => setZone('true')}
+                            color="#ebab34"
+                        />
                     </View>
-                </RadioButton.Group>
-
+                    <View style={StyleSheet.radioGroup}>
+                    <Text style={page.radioLabel}>No Zone</Text>
+                        <RadioButton
+                            value="false"
+                            status={zone === 'false' ? 'checked' : 'unchecked'}
+                            onPress={() => setZone('false')}
+                            color="#ebab34"
+                        />
+                    </View>
+                </View>
+                {/* Radio Button - Grading */}
                 <Text style={page.text}>Grading</Text>
-                <RadioButton.Group onValueChange={value => setGrading(value)} value={grading}>
-                    <View style={page.radioGroup}>
+                <View style={page.radioGroupContainer}>
+                    <View style={StyleSheet.radioGroup}>
                         <Text style={page.radioLabel}>FONT</Text>
-                        <RadioButton value="Font" />
-                        <Text style={page.radioLabel}>V-Scale</Text>
-                        <RadioButton value="vScale" />
+                        <RadioButton
+                            value="Font"
+                            status={grading === 'Font' ? 'checked' : 'unchecked'}
+                            onPress={() => setGrading('Font')}
+                            color="#ebab34"
+                        />
                     </View>
-                </RadioButton.Group>
+                    <View style={StyleSheet.radioGroup}>
+                        <Text style={page.radioLabel}>V-Scale</Text>
+                        <RadioButton
+                            value="vScale"
+                            status={grading === 'vScale' ? 'checked' : 'unchecked'}
+                            onPress={() => setGrading('vScale')}
+                            color="#ebab34"
+                        />
+                    </View>
+                </View>
                 {/* Continue Button */}
                 <View style={page.buttonContainer}>
                 <TouchableOpacity style={page.continueButton} onPress={handleConfirm}>
                     <Text style={page.continueButtonText}>Continue</Text>
                 </TouchableOpacity>
                 </View>
-            </View>
+            </SafeAreaView>
         </PaperProvider>
     );
 }
@@ -131,8 +155,10 @@ export default function HostSession({ navigation }){
 const page = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        padding: 5,
+        alignItems: 'center',
         backgroundColor: '#34b4eb',
+        justifyContent: 'space-between',
     },
   
     text: {
@@ -142,9 +168,15 @@ const page = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         textAlign: 'center',
-        alignSelf: 'flex-end',      
+        alignSelf: 'flex-end'
+    
     },
-  
+    radioGroupContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-end',  
+    },
+
     radioGroup: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
@@ -160,12 +192,13 @@ const page = StyleSheet.create({
       },
   
     menuButton: {
-        marginBottom: 20,
+        marginBottom: 10,
         alignSelf: 'flex-end',
     },
   
     buttonContainer: {
-        marginTop: 40,
+        marginTop: 80,
+        marginBottom: 20,
         width: '100%',
         paddingHorizontal: 40,
         alignSelf: 'flex-end',
@@ -184,3 +217,6 @@ const page = StyleSheet.create({
         fontWeight: 'bold',
     },
   });
+
+
+
