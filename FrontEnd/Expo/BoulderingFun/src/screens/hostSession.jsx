@@ -1,6 +1,6 @@
 
 import React, { useContext, useRef, useState } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';
 import Heading from "../components/heading";
 import { GameContext } from '../context/GameContext';

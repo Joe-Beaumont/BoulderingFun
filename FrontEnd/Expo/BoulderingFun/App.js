@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { io } from 'socket.io-client';
-import { Login, HomePage, FindFriends, SoloSession, HostSession, JoinSession, Register, HostStaging, GameScreen} from './src/screens/index';
 import { GameProvider } from './src/context/GameContext';
 import { FindFriends, GameScreen, HomePage, HostSession, HostStaging, JoinSession, Login, Register, SoloSession } from './src/screens/index';
 
