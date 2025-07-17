@@ -1,8 +1,11 @@
-import React, { useRef, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View, findNodeHandle } from 'react-native';
+
+import React, { useContext, useRef, useState } from "react";
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';
 import Heading from "../components/heading";
+import { GameContext } from '../context/GameContext';
 import socket from '../utils/socket';
+
 
 export default function HostSession({ navigation }){
     const [timeLimit, setTimeLimit] = useState('3');
@@ -15,10 +18,20 @@ export default function HostSession({ navigation }){
     const [anchorPos, setAnchorPos] = useState({ x: 0, y: 0 });
     const buttonRef = useRef(null);
 
+    const {
+    problems,
+    setProblems,
+    attempts,
+    setAttempts,
+  } = useContext(GameContext);
+
     const handleConfirm = () => {
 
         const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
         setRoomId(newRoomId);
+        //Clear gameState
+        setProblems([]);
+        setAttempts({});
 
         socket.emit('create-room', {
             roomId: newRoomId,
@@ -26,7 +39,7 @@ export default function HostSession({ navigation }){
                 timeLimit,
                 zone,
                 grading,
-                playerCount
+                playerCount,
             }
         });
 

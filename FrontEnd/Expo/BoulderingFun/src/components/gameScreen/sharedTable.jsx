@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, Switch, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import socket from '../../utils/socket';
+import React from 'react';
+import { Button, Switch, Text, View } from 'react-native';
 
 const AttemptOptions = ['1', '2', '3', '4+', 'Incomplete'];
 
@@ -33,7 +32,6 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
         onAttemptSubmit(problemId);
     };
 
-    console.log(problems);
 
     return (
         <View>

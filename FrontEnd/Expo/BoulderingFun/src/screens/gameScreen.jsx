@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import React, { useContext, useEffect } from 'react';
+import { ScrollView, Text } from 'react-native';
+import { AddProblemForm, SharedTable, TimerButton } from '../components/gameScreen/index';
+import { GameContext } from '../context/GameContext';
 import socket from '../utils/socket';
-import { View, Text, ScrollView } from 'react-native';
-import { SharedTable, AddProblemForm, TimerButton } from '../components/gameScreen/index';
 
 export default function GameScreen({ route }) {
     const {
@@ -15,9 +15,13 @@ export default function GameScreen({ route }) {
         isHost = false,
     } = route.params;
 
+    const {
+        problems,
+        setProblems,
+        attempts,
+        setAttempts,
+    } = useContext(GameContext)
 
-    const [problems, setProblems] = useState([]);
-    const [attempts, setAttempts] = useState({});
 
     useEffect(() => {
         socket.emit('join-room', { roomId, playerId}, (response) => {
@@ -63,7 +67,13 @@ export default function GameScreen({ route }) {
             roomId,
             playerId,
             problemId,
-            data
+            attempts: data
+        }, (response) => {
+            if (response.error) {
+                console.log('Submit attempt error');
+            } else {
+                console.log('Submit attempt success');
+            }
         });
     };
 
