@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import QRCode from "react-qr-code";
-import { View, Text, Button } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
-import socket from '../utils/socket';
+import QRCode from "react-qr-code";
+import Heading from "../components/heading";
 
 export default function HostStaging({ route, navigation }){
     const { roomId, timeLimit, zone, grading, playerCount } = route.params;
     const [showQR, setShowQR] = useState(false);
-
+    
 
     const qrData = JSON.stringify({
         timeLimit,
@@ -31,28 +31,91 @@ export default function HostStaging({ route, navigation }){
 
 
     return (
-        <ScrollView>
-            <View>
-                <Text>Session Summary</Text>
-                <Text>Room: {roomId}</Text>
-                <Text>Time Limit: {timeLimit} minutes</Text>
-                <Text>Zone: {zone === 'true' ? 'Zones enabled' : 'Zones disabled'}</Text>
-                <Text>Grading: {grading}</Text>
-                <Text>Number of Players: {playerCount}</Text>
-
-                <Button title="Generate QR code" onPress={() => setShowQR(!showQR)} />
-            </View>
-
-            {showQR && roomId && (
+        <ScrollView style={page.scrollContainer}>
+            <Heading title="Host Session" />
+            <View style={page.container}>
                 <View>
-                    <QRCode value={qrData} size={200} />
-                    <Text>Scan this QR to join the session</Text>
+                    <Text style={page.text}>Session Summary</Text>
+                    <Text style={page.text}>Room: {roomId}</Text>
+                    <Text style={page.text}>Time Limit: {timeLimit} minutes</Text>
+                    <Text style={page.text}>Zone: {zone === 'true' ? 'Zones enabled' : 'Zones disabled'}</Text>
+                    <Text style={page.text}>Grading: {grading}</Text>
+                    <Text style={page.text}>Number of Players: {playerCount}</Text>
                 </View>
-            )}
+                <View style={page.buttonContainer}>
+                    <TouchableOpacity
+                        style={page.button}
+                        onPress={() => setShowQR(!showQR)}
+                    >
+                        <Text style={page.buttonText}>Generate QR Code</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View>
-                <Button title="Start Session" onPress={handleStartGame} />
+                {showQR && roomId && (
+                    <View>
+                        <QRCode value={qrData} size={200} />
+                        <Text>Scan this QR to join the session</Text>
+                    </View>
+                )}
+                <View style={page.buttonContainer}>
+                    <TouchableOpacity
+                        style={page.button}
+                        onPress={handleStartGame}
+                    >
+                        <Text style={page.buttonText}>Start Session</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </ScrollView>
     );
 }
+
+
+const page = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 5,
+        alignItems: 'center',
+        backgroundColor: '#34b4eb',
+        justifyContent: 'space-between',
+    },
+
+    scrollContainer: {
+        flexGrow: 1,
+        padding: 0,
+        backgroundColor: '#34b4eb',
+    },
+  
+    text: {
+        color: '#eaeaea',
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 5,
+        marginBottom: 5,
+        textAlign: 'center',
+        alignSelf: 'flex-end'
+    
+    },
+  
+    buttonContainer: {
+        marginTop: 10,
+        marginBottom: 10,
+        width: '100%',
+        paddingHorizontal: 40,
+        alignSelf: 'flex-end',
+    },
+  
+    button: {
+        backgroundColor: '#ebab34',
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+  
+    buttonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+  });

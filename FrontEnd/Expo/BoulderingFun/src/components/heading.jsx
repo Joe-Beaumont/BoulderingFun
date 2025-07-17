@@ -1,19 +1,24 @@
 import React from "react";
-import { Image, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 export default function Heading({ title }) {
     return (
-        <SafeAreaView style={styles.headingContainer}>
-            <Image
-                source={require('../images/goat_logo.png')}
-                style={styles.logo}
-            />
-            <Text style={styles.headingText}>{title}</Text>
-        </SafeAreaView>
+        <SafeAreaView style={page.padding}>
+            <View style={page.headingContainer}>
+                <Image
+                    source={require('../images/goat_logo.png')}
+                    style={page.logo}
+                />
+                <Text style={page.headingText}>{title}</Text>
+            </View>
     );
 }
 
-const styles = StyleSheet.create({
+const page = StyleSheet.create({
+    padding: {
+        paddingBottom: 20,
+        backgroundColor: '#34b4eb',
+    },
     headingContainer: {
         width: '100%',
         paddingTop: 25,

@@ -1,7 +1,7 @@
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Heading from "../components/heading";
-
 const { width } = Dimensions.get('window');
 const buttonsPerRow = 2;
 const gridPadding = 20;
@@ -13,7 +13,10 @@ const buttonHeight = buttonWidth;
 
 export default function HomePage({ navigation }){
     return (
-            <SafeAreaView style = {{ flex: 1, backgroundColor: '#34b4eb' }}>
+        <View style={page.fullScreen}>
+            <Heading title = "GOATED"/>    
+            <SafeAreaView style={page.container}>
+                <View style = {page.grid}>
                 <Heading title = "GOATED"/>    
                 <View style = {page.container}>
                     <TouchableOpacity
@@ -42,10 +45,15 @@ export default function HomePage({ navigation }){
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
+        </View>
     );
 }
 
 const page = StyleSheet.create ({
+    fullScreen: {
+        flex: 1,
+        backgroundColor: '#34b4eb',
+    },
     container: {
         paddingTop: 60,
         flexDirection: 'row',
@@ -56,6 +64,7 @@ const page = StyleSheet.create ({
         padding: 5,
         alignItems: 'center',
         backgroundColor: '#34b4eb',
+        justifyContent: 'space-between',
     },
     heading: {
         flexDirection: 'row',
@@ -94,7 +103,7 @@ const page = StyleSheet.create ({
     },
     buttonText: {
         color: '#eaeaea',
-        fontSize: 16,
+        fontSize: 22,
         fontWeight: 'bold',
         textAlign: 'center',
     }
