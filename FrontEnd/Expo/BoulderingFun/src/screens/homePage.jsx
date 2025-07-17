@@ -1,8 +1,9 @@
 import React from "react";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Heading from "../components/heading";
-const { width } = Dimensions.get('window');
+
+const { width, height } = Dimensions.get('window');
 const buttonsPerRow = 2;
 const gridPadding = 20;
 const buttonMargin = 10;
@@ -17,8 +18,6 @@ export default function HomePage({ navigation }){
             <Heading title = "GOATED"/>    
             <SafeAreaView style={page.container}>
                 <View style = {page.grid}>
-                <Heading title = "GOATED"/>    
-                <View style = {page.container}>
                     <TouchableOpacity
                         style = {page.button} 
                         onPress={() => navigation.navigate('FindFriends')}
@@ -55,11 +54,6 @@ const page = StyleSheet.create ({
         backgroundColor: '#34b4eb',
     },
     container: {
-        paddingTop: 60,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: buttonMargin,
         flex: 1,
         padding: 5,
         alignItems: 'center',
@@ -106,5 +100,11 @@ const page = StyleSheet.create ({
         fontSize: 22,
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
+    grid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: buttonMargin,
+    },
 });

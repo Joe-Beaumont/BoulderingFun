@@ -11,6 +11,7 @@ export default function Heading({ title }) {
                 />
                 <Text style={page.headingText}>{title}</Text>
             </View>
+        </SafeAreaView>
     );
 }
 
