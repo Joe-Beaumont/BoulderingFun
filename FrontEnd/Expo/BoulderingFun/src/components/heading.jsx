@@ -11,7 +11,6 @@ export default function Heading({ title }) {
                 />
                 <Text style={page.headingText}>{title}</Text>
             </View>
-        </SafeAreaView>
     );
 }
 
@@ -20,7 +19,6 @@ const page = StyleSheet.create({
         paddingBottom: 20,
         backgroundColor: '#34b4eb',
     },
-
     headingContainer: {
         width: '100%',
         paddingTop: 25,

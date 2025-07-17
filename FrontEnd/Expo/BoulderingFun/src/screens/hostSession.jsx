@@ -1,3 +1,4 @@
+
 import React, { useContext, useRef, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';
@@ -17,7 +18,6 @@ export default function HostSession({ navigation }){
     const playerButtonRef = useRef(null);
     const [timeAnchorPos, setTimeAnchorPos] = useState({ x: 0, y: 0 });
     const [playerAnchorPos, setPlayerAnchorPos] = useState({ x: 0, y: 0 });
-
 
     const {
     problems,
