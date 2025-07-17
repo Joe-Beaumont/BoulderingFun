@@ -1,6 +1,15 @@
+<<<<<<< Updated upstream
 import React, { useState } from "react";
 import { View, Text, Button } from 'react-native';
 import { RadioButton, Menu, Divider, Provider as PaperProvider } from 'react-native-paper';
+=======
+import React, { useContext, useRef, useState } from "react";
+import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';
+import Heading from "../components/heading";
+import { GameContext } from '../context/GameContext';
+import socket from '../utils/socket';
+>>>>>>> Stashed changes
 
 export default function HostSession({ navigation }){
     const [timeLimit, setTimeLimit] = useState('3');
@@ -10,7 +19,36 @@ export default function HostSession({ navigation }){
     const [timeMenuVisible, setTimeMenuVisible] = useState(false);
     const [playerMenuVisible, setPlayerMenuVisible] = useState(false);
 
+
+    const {
+    problems,
+    setProblems,
+    attempts,
+    setAttempts,
+  } = useContext(GameContext);
+
     const handleConfirm = () => {
+<<<<<<< Updated upstream
+=======
+
+        const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+        setRoomId(newRoomId);
+
+        //Clear gameState
+        setProblems([]);
+        setAttempts({});
+
+        socket.emit('create-room', {
+            roomId: newRoomId,
+            settings: {
+                timeLimit,
+                zone,
+                grading,
+                playerCount,
+            }
+        });
+
+>>>>>>> Stashed changes
         navigation.navigate('HostStaging', {
             timeLimit,
             zone,

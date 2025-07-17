@@ -15,8 +15,8 @@ const io = new Server(server, {
     }
 });
 
-//Session container
-const sessions = {};
+//room container
+const rooms = {};
 
 // Connection
 io.on('connection', (socket) => {
@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
 
     //Create room
     socket.on('create-room', ({ roomId, settings }, callback) => {
-        sessions[roomId] = {
+        rooms[roomId] = {
             host: socket.id,
             settings,
             players: [],
@@ -38,11 +38,15 @@ io.on('connection', (socket) => {
 
     //Join room
     socket.on('join-room', ({ roomId, playerId }, callback) => {
-        const session = sessions[roomId];
-        if (!session) {
+        const room = rooms[roomId];
+        if (!room) {
             return callback({ error: 'Room not found'});
         }
-        session.players.push({ id: socket.id, name: playerId });
+
+        if (room.players.length >= Number(room.settings.playerCount)){
+            return callback({ error: 'Room is full'});
+        }
+        room.players.push({ id: socket.id, name: playerId });
         socket.join(roomId);
         io.to(roomId).emit('player-joined', { name: playerId });
         callback({ success: true });
@@ -50,13 +54,13 @@ io.on('connection', (socket) => {
 
     //Add problem
     socket.on('add-problem', ({ roomId, problemData }, callback) => {
-        const session = sessions[roomId];
-        if (!session) return callback({error: "Room not found"});
+        const room = rooms[roomId];
+        if (!room) return callback({error: "Room not found"});
 
         const problem = problemData;
 
-        session.problems.push(problem);
-        session.attempts[problem.id] = {};
+        room.problems.push(problem);
+        room.attempts[problem.id] = {};
 
         //Broadcast to All clients in room
         io.to(roomId).emit('problem-added', problem);
@@ -66,11 +70,11 @@ io.on('connection', (socket) => {
 
     //Submit Attempts
     socket.on('submit-attempt', ({ roomId, problemId, playerId, attempts }, callback) => {
-        const session = sessions[roomId];
-        if (!session || !session.attempts[problemId]) {
-            return callback({ error: "Invalid problem or session" });
+        const room = rooms[roomId];
+        if (!room || !room.attempts[problemId]) {
+            return callback({ error: "Invalid problem or room" });
         }
-        session.attempts[problemId][playerId] = attempts;
+        room.attempts[problemId][playerId] = attempts;
 
         //Broadcast to all clients
         io.to(roomId).emit('attempt-updated', {
@@ -79,7 +83,7 @@ io.on('connection', (socket) => {
             attempts
         });
 
-        callback( { success: true });
+        if(callback) callback( { success: true });
     })
 
     //Disconnect
