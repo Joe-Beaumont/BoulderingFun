@@ -1,5 +1,6 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import Heading from "../components/heading";
 
 const { width, height } = Dimensions.get('window');
@@ -13,44 +14,51 @@ const buttonHeight = buttonWidth;
 
 export default function HomePage({ navigation }){
     return (
-        <View style = {page.container}>
+        <View style={page.fullScreen}>
             <Heading title = "GOATED"/>    
-            <View style = {page.grid}>
-                <TouchableOpacity
-                    style = {page.button} 
-                    onPress={() => navigation.navigate('FindFriends')}
-                >
-                    <Text style = {page.buttonText}>Find Friends</Text> 
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style = {page.button}
-                    onPress={() => navigation.navigate('SoloSession')}
-                >
-                    <Text style = {page.buttonText}>Solo Session</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style = {page.button}
-                    onPress={() => navigation.navigate('HostSession')}
-                >
-                    <Text style = {page.buttonText}>Host Session</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style = {page.button}
-                    onPress={() => navigation.navigate('JoinSession')}
-                >
-                    <Text style = {page.buttonText}>Join Session</Text>
-                </TouchableOpacity>
-            </View>
+            <SafeAreaView style={page.container}>
+                <View style = {page.grid}>
+                    <TouchableOpacity
+                        style = {page.button} 
+                        onPress={() => navigation.navigate('FindFriends')}
+                    >
+                        <Text style = {page.buttonText}>Find Friends</Text> 
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style = {page.button}
+                        onPress={() => navigation.navigate('SoloSession')}
+                    >
+                        <Text style = {page.buttonText}>Solo Session</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style = {page.button}
+                        onPress={() => navigation.navigate('HostSession')}
+                    >
+                        <Text style = {page.buttonText}>Host Session</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style = {page.button}
+                        onPress={() => navigation.navigate('JoinSession')}
+                    >
+                        <Text style = {page.buttonText}>Join Session</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         </View>
     );
 }
 
 const page = StyleSheet.create ({
+    fullScreen: {
+        flex: 1,
+        backgroundColor: '#34b4eb',
+    },
     container: {
         flex: 1,
         padding: 5,
         alignItems: 'center',
         backgroundColor: '#34b4eb',
+        justifyContent: 'space-between',
     },
     heading: {
         flexDirection: 'row',
@@ -89,7 +97,7 @@ const page = StyleSheet.create ({
     },
     buttonText: {
         color: '#eaeaea',
-        fontSize: 16,
+        fontSize: 22,
         fontWeight: 'bold',
         textAlign: 'center',
     },
