@@ -52,7 +52,7 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
 
                         {zoneEnabled && problem.hasZone && (
                             <View>
-                                <Text>Zone</Text>
+                                <Text>Zone reached?</Text>
                                 <Switch
                                 disabled={isSubmitted(problem.id)}
                                 value={attempts[problem.id]?.[playerId]?.zoneReached || false}
@@ -68,6 +68,6 @@ export default function SharedTable({ problems, playerId, zoneEnabled, attempts,
                             )}
                         </View>
             ))}
-            </View>
+        </View>
     );
 }
