@@ -4,7 +4,7 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { io } from 'socket.io-client';
 import { GameProvider } from './src/context/GameContext';
-import { FindFriends, GameScreen, HomePage, HostSession, HostStaging, JoinSession, Login, Register, SoloSession } from './src/screens/index';
+import { FindFriends, GameScreen, HomePage, HostSession, HostStaging, JoinSession, Leaderboard, Login, Register, SoloSession } from './src/screens/index';
 
 const socket = io("http://192.168.1.52:3000");
 const Stack = createNativeStackNavigator();
@@ -24,6 +24,7 @@ export default function App() {
                         <Stack.Screen name='HostStaging' component={HostStaging} />
                         <Stack.Screen name='JoinSession' component={JoinSession} />
                         <Stack.Screen name='GameScreen' component={GameScreen} />
+                        <Stack.Screen name='Leaderboard' component={Leaderboard} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </GameProvider>

@@ -1,4 +1,3 @@
-
 import React, { useContext, useRef, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Menu, Provider as PaperProvider, RadioButton } from 'react-native-paper';

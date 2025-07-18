@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { Button, ScrollView, Text } from 'react-native';
 import { AddProblemForm, SharedTable, TimerButton } from '../components/gameScreen/index';
 import { GameContext } from '../context/GameContext';
 import socket from '../utils/socket';
 
-export default function GameScreen({ route }) {
+export default function GameScreen({ route, navigation }) {
     const {
         roomId,
         playerId,
@@ -19,7 +19,7 @@ export default function GameScreen({ route }) {
         problems,
         setProblems,
         attempts,
-        setAttempts,
+        setAttempts
     } = useContext(GameContext)
 
 
@@ -92,7 +92,16 @@ export default function GameScreen({ route }) {
             }
         }));
     }
-      
+ 
+    const handleEnd = () => {
+        socket.emit('end-session', { roomId }, (response) => {
+            if (response.error) {
+                console.error("Failed to end session:", response.error);
+            } else {
+                navigation.navigate('Leaderboard');
+           }
+        });
+    };     
 
 
     return (
@@ -118,6 +127,9 @@ export default function GameScreen({ route }) {
             onAttemptChange={handleAttemptChange}
             onAttemptSubmit={handleSubmitAttempt}
             />
+            {isHost && (
+                <Button title="End Session" onPress={handleEnd} />
+            )}
         </ScrollView>
     );
 }

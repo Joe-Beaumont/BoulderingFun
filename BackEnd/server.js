@@ -96,6 +96,52 @@ io.on('connection', (socket) => {
         const roomExists = rooms.has(roomId);
         callback({ exists: roomExists})
     });
+
+    //Scoring
+    socket.on('end-session', ({ roomId }, callback) => {
+        const room = rooms[roomId];
+        if (!room) {
+            return callback ({ error: 'Room does not exist' });
+        }
+
+        const { problems, players, attempts } = room;
+
+        //score calculation
+        const scores = players.map(player => {
+            let totalScore = 0;
+
+            problems.forEach(problem => {
+                const attempt = attempts?.[problem.id]?.[player.id];
+
+                let score = 0;
+
+                if (attempt === "Incomplete"){
+                    if (problem.hasZone && problem.zoneReached?.[player.id]){
+                        score = 30;
+                    } else {
+                        score = 0;
+                    }
+                } else   if (attempt === "1") score = 100;
+                    else if (attempt === "2") score = 70;
+                    else if (attempt === "3") score = 40;
+                    else score = 10;
+
+                totalScore += score;
+            });
+
+            return {
+                playerId: player.id,
+                name: player.name,
+                score: totalScore,
+            };
+        });
+
+        scores.sort((a, b) => b.score - a.score);
+
+        io.to(roomId).emit('session-ended', { scores });
+
+        callback({ success: true })
+    });
 });
 
 //Generate Room Id
